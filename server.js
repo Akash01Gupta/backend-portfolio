@@ -28,6 +28,11 @@ app.use('/api/admin/about', aboutRoutes);
 app.use('/api/admin/messages', messageRoutes);
 app.use('/api/projects', publicProjects);
 
+
+app.get("/", (req, res) => {
+  res.send("Backend Portfolio API Running...");
+});
+
 // ==============================
 // Serve Frontend in Production
 // ==============================
@@ -40,6 +45,7 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(frontendPath, 'index.html'));
   });
 }
+
 
 // ==============================
 // MongoDB + Server Start
