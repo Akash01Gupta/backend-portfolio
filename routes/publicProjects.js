@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Project = require("../models/projects");
+const Project = require("../models/Project");
+
 
 // Public → Fetch All Projects
 router.get("/", async (req, res) => {
