@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Project = require("../models/Project");
 
-const authMiddleware = require("../middleware/authMiddleware");
+const { protect, isAdmin } = require("../middleware/auth");
 
 // Create Project (Admin only)
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", isAdmin, async (req, res) => {
   try {
     const project = await Project.create(req.body);
     res.status(201).json(project);
@@ -15,7 +15,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 // Update Project (Admin only)
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", isAdmin, async (req, res) => {
   try {
     const updated = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updated);
@@ -25,7 +25,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 });
 
 // Delete Project (Admin only)
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", isAdmin, async (req, res) => {
   try {
     await Project.findByIdAndDelete(req.params.id);
     res.json({ message: "Project deleted successfully" });
