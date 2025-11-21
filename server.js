@@ -14,8 +14,9 @@ app.use(helmet());
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://your-frontend-domain.vercel.app"
+    "https://portfolio-frontend.vercel.app" // replace with your real Vercel URL
   ],
+  methods: ["GET","POST","PUT","DELETE"],
   credentials: true
 }));
 app.use(express.json());
@@ -25,22 +26,21 @@ app.use(morgan('dev'));
 // ROUTES
 // =============================
 const authRoutes = require('./routes/auth');
-const projectRoutes = require('./routes/projects'); // Admin + public inside file
+const adminProjectRoutes = require('./routes/adminProjects'); // 🔹 NEW separated routes
+const publicProjectRoutes = require('./routes/publicProjects'); // 🔹 NEW separated routes
 const aboutRoutes = require('./routes/about');
 const messageRoutes = require('./routes/messages');
 
-// API ROUTES
+// ADMIN API ROUTES (Protected)
 app.use('/api/admin/auth', authRoutes);
-app.use('/api/admin/projects', projectRoutes);
+app.use('/api/admin/projects', adminProjectRoutes);
 app.use('/api/admin/about', aboutRoutes);
 app.use('/api/admin/messages', messageRoutes);
 
-// Public Projects Route
-app.use('/api/projects', projectRoutes);
+// Public routes (No token needed)
+app.use('/api/projects', publicProjectRoutes);
 
-// =============================
 // Test Route
-// =============================
 app.get("/", (req, res) => {
   res.status(200).send("Backend Portfolio API Running 🚀");
 });
